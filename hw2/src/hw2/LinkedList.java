@@ -1,32 +1,30 @@
 package hw2;
 
-//LinkedList class
+// LinkedList class
 //
-//CONSTRUCTION: with no initializer
-//Access is via LinkedListItr class
+// CONSTRUCTION: with no initializer
+// Access is via LinkedListItr class
 //
-//******************PUBLIC OPERATIONS*********************
-//boolean isEmpty( )	 --> Return true if empty; else false
-//void makeEmpty( )	  --> Remove all items
-//LinkedListItr zeroth( )--> Return position to prior to first
-//LinkedListItr first( ) --> Return first position
-//void insert( x, p )	--> Insert x after current iterator position p
-//void remove( x )	   --> Remove x
-//LinkedListItr find( x )
+// ******************PUBLIC OPERATIONS*********************
+// boolean isEmpty( )	 --> Return true if empty; else false
+// void makeEmpty( )	  --> Remove all items
+// LinkedListItr zeroth( )--> Return position to prior to first
+// LinkedListItr first( ) --> Return first position
+// void insert( x, p )	--> Insert x after current iterator position p
+// void remove( x )	   --> Remove x
+// LinkedListItr find( x )
 //						--> Return position that views x
-//LinkedListItr findPrevious( x )
+// LinkedListItr findPrevious( x )
 //						--> Return position prior to x
-//******************ERRORS********************************
-//No special errors
 
 /**
-* Linked list implementation of the list
-*	using a header node.
-* Access to the list is via LinkedListItr.
-* @author Mark Allen Weiss
-* @see LinkedListItr
-*/
-public class LinkedList
+ * Linked list implementation of the list
+ *	using a header node.
+ * Access to the list is via LinkedListItr.
+ * @author Mark Allen Weiss
+ * @see LinkedListItr
+ */
+public class LinkedList<T>
 {
 	/**
 	 * Construct the list
@@ -34,6 +32,7 @@ public class LinkedList
 	public LinkedList( )
 	{
 		header = new ListNode( null );
+		this.footer = header;
 	}
 
 	/**
@@ -55,6 +54,22 @@ public class LinkedList
 
 
 	/**
+	 * Return the header node
+	 */
+	public ListNode getStart( )
+	{
+		return this.header;
+	}
+	
+	/**
+	 * Return the footer node
+	 */
+	public ListNode getFinish( )
+	{
+		return this.footer;
+	}
+	
+	/**
 	 * Return an iterator representing the header node.
 	 */
 	public LinkedListItr zeroth( )
@@ -74,12 +89,60 @@ public class LinkedList
 	/**
 	 * Insert after p.
 	 * @param x the item to insert.
-	 * @param p the position prior to the newly inserted item.
+	 * @param p the item prior to the newly inserted item.
 	 */
-	public void insert( Object x, LinkedListItr p )
+	public ListNode add( Comparable x, ListNode p )
 	{
-		if( p != null && p.current != null )
-			p.current.next = new ListNode( x, p.current.next );
+		ListNode xx = new ListNode( x );
+		
+		if( p.next != null )
+		{
+			xx.next = p.next;
+		}
+		p.next = xx;
+		
+		return p.next;
+	}
+	
+	/**
+	 * Insert at the end of the list
+	 * @param x the item to insert.
+	 */
+	public void add( Comparable x )
+	{
+		// handle empty lists
+		if( this.header.element == null ) {
+			this.header = new ListNode( x );
+			this.footer = this.header;
+		}
+		// is it less than start?
+		else if( x.compareTo( this.header.element ) <= 0 ) {
+			ListNode xx = new ListNode( x );
+			xx.next = this.header;
+			this.header = xx;
+		}
+		// not on end	
+		else if( x.compareTo( this.footer.element ) >= 0)
+		{
+			this.footer.next = new ListNode( x );
+			this.footer = this.footer.next;
+		}
+		// okay, somewhere else
+		else
+		{
+			LinkedListItr itr = this.zeroth( );
+			for( ; !itr.isPastEnd( ); itr.advance( ) )
+			{
+				if( x.compareTo( itr.next() ) <= 0 )
+				{
+					ListNode xx = new ListNode( x );
+					xx.next = itr.current.next;
+					itr.current.next = xx;
+					
+					break;
+				}
+			}
+		}
 	}
 
 	/**
@@ -132,42 +195,20 @@ public class LinkedList
 			System.out.print( "Empty list" );
 		else
 		{
-			LinkedListItr itr = theList.first( );
+			LinkedListItr itr = theList.zeroth( );
 			for( ; !itr.isPastEnd( ); itr.advance( ) )
 				System.out.print( itr.retrieve( ) + " " );
 		}
 
 		System.out.println( );
 	}
+	
+	public void printList()
+	{
+		LinkedList.printList( this );
+	}
 
 	private ListNode header;
-
-
-	public static void main( String [ ] args )
-	{
-		LinkedList	theList = new LinkedList( );
-		LinkedListItr theItr;
-		int i;
-
-		theItr = theList.zeroth( );
-		printList( theList );
-
-		for( i = 0; i < 10; i++ )
-		{
-			theList.insert( new MyInteger( i ), theItr );
-			printList( theList );
-			theItr.advance( );
-		}
-
-		for( i = 0; i < 10; i += 2 )
-			theList.remove( new MyInteger( i ) );
-
-		for( i = 0; i < 10; i++ )
-			if( ( i % 2 == 0 ) != ( theList.find( new MyInteger( i ) ).isPastEnd( ) ) )
-				System.out.println( "Find fails!" );
-
-		System.out.println( "Finished deletions" );
-		printList( theList );
-	}
+	private ListNode footer;
 
 }

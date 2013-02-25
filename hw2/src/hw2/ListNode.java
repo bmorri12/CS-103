@@ -7,19 +7,19 @@ package hw2;
 class ListNode
 {
 		// Constructors
-	ListNode( Object theElement )
+	ListNode( Comparable theElement )
 	{
 		this( theElement, null );
 	}
 
-	ListNode( Object theElement, ListNode n )
+	ListNode( Comparable theElement, ListNode n )
 	{
 		element = theElement;
 		next	= n;
 	}
 
 		// Friendly data; accessible by other package routines
-	Object   element;
+	Comparable   element;
 	ListNode next;
 }
 
