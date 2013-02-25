@@ -85,46 +85,34 @@ public class LinkedList<T>
 	{
 		return new LinkedListItr( header.next );
 	}
-
+	
 	/**
-	 * Insert after p.
+	 * Insert into the list, sorted
+	 * 
+	 * Best case: O(1) for start or end
+	 * Worst case: O(n) for 1 before end
+	 * Average case: O(n/2)
+	 * 
 	 * @param x the item to insert.
-	 * @param p the item prior to the newly inserted item.
 	 */
-	public ListNode add( Comparable x, ListNode p )
+	public ListNode add( Comparable x )
 	{
 		ListNode xx = new ListNode( x );
 		
-		if( p.next != null )
-		{
-			xx.next = p.next;
-		}
-		p.next = xx;
-		
-		return p.next;
-	}
-	
-	/**
-	 * Insert at the end of the list
-	 * @param x the item to insert.
-	 */
-	public void add( Comparable x )
-	{
 		// handle empty lists
 		if( this.header.element == null ) {
-			this.header = new ListNode( x );
+			this.header = xx;
 			this.footer = this.header;
 		}
 		// is it less than start?
 		else if( x.compareTo( this.header.element ) <= 0 ) {
-			ListNode xx = new ListNode( x );
 			xx.next = this.header;
 			this.header = xx;
 		}
 		// not on end	
 		else if( x.compareTo( this.footer.element ) >= 0)
 		{
-			this.footer.next = new ListNode( x );
+			this.footer.next = xx;
 			this.footer = this.footer.next;
 		}
 		// okay, somewhere else
@@ -135,7 +123,6 @@ public class LinkedList<T>
 			{
 				if( x.compareTo( itr.next() ) <= 0 )
 				{
-					ListNode xx = new ListNode( x );
 					xx.next = itr.current.next;
 					itr.current.next = xx;
 					
@@ -143,21 +130,83 @@ public class LinkedList<T>
 				}
 			}
 		}
+		
+		return xx;
 	}
 
 	/**
 	 * Return iterator corresponding to the first node containing an item.
+	 * 
+	 * Best case: O(1) for start or end
+	 * Worst case: O(n) for 1 before end
+	 * Average case: O(n/2)
+	 * 
 	 * @param x the item to search for.
 	 * @return an iterator; iterator isPastEnd if item is not found.
 	 */
-	public LinkedListItr find( Object x )
+	public LinkedListItr find( Comparable x )
 	{
-/* 1*/	  ListNode itr = header.next;
+		// smart handling for front
+		if( x.compareTo( this.header.element ) < 0 ) {
+			return new LinkedListItr( null );
+		}
+		
+		// smart handling for tail
+		if( x.compareTo( this.footer.element ) > 0 ) {
+			return new LinkedListItr( null );
+		}
+		
+		LinkedListItr itr = this.zeroth( );
 
-/* 2*/	  while( itr != null && !itr.element.equals( x ) )
-/* 3*/		  itr = itr.next;
+		for( ; !itr.isPastEnd( ); itr.advance( ) )
+		{
+//			System.out.print( x + "|" + itr.retrieve() );
+			if( x.equals( itr.retrieve() ) )
+			{
+				return itr;
+			}
+		}
 
-/* 4*/	  return new LinkedListItr( itr );
+		return itr;
+	}
+	
+	/**
+	 * Return integer corresponding to the first node containing an item.
+	 * 
+	 * Best case: O(1) for start or end
+	 * Worst case: O(n) for 1 before end
+	 * Average case: O(n/2)
+	 * 
+	 * @param x the item to search for.
+	 * @return int; -1 if not found;
+	 */
+	public int findPosition( Comparable x )
+	{
+		// smart handling for front
+		if( x.compareTo( this.header.element ) < 0 ) {
+			return -1;
+		}
+		
+		// smart handling for tail
+		if( x.compareTo( this.footer.element ) > 0 ) {
+			return -1;
+		}
+		
+		int i = 0;
+		
+		LinkedListItr itr = this.zeroth( );
+
+		for( ; !itr.isPastEnd( ); itr.advance( ) )
+		{
+//			System.out.print( x + "|" + itr.retrieve() );
+			if( x.equals( itr.retrieve() ) )
+			{
+				return i;
+			}
+			i++;
+		}
+
+		return i;
 	}
 
 	/**
@@ -166,26 +215,60 @@ public class LinkedList<T>
 	 * @return appropriate iterator if the item is found. Otherwise, the
 	 * iterator corresponding to the last element in the list is returned.
 	 */
-	public LinkedListItr findPrevious( Object x )
+	public LinkedListItr findPrevious( Comparable x )
 	{
-/* 1*/	  ListNode itr = header;
+		// smart handling for front
+		if( x.compareTo( this.header.element ) < 0 ) {
+			return new LinkedListItr( null );
+		}
+		
+		// smart handling for end
+		if( x.compareTo( this.footer.element ) > 0 ) {
+			return new LinkedListItr( null );
+		}
+				
+		LinkedListItr itr = this.zeroth( );
 
-/* 2*/	  while( itr.next != null && !itr.next.element.equals( x ) )
-/* 3*/		  itr = itr.next;
+		for( ; !itr.isPastEnd( ); itr.advance( ) )
+		{
+//		System.out.print( x + "|" + itr.retrieve() );
+			if( x.equals( itr.next() ) )
+			{
+				return itr;
+			}
+		}
 
-/* 4*/	  return new LinkedListItr( itr );
+		return itr;
 	}
 
 	/**
 	 * Remove the first occurrence of an item.
+	 * 
+	 * Best case: O(1) for start or end
+	 * Average case: O(n/2)
+	 * 
 	 * @param x the item to remove.
 	 */
-	public void remove( Object x )
+	public void remove( Comparable x )
 	{
-		LinkedListItr p = findPrevious( x );
+		if( this.header.element == x )
+		{
+			this.header = this.header.next;
+		}
+		else
+		{
+			LinkedListItr p = findPrevious( x );
+			
+			// fix for header
+			if( this.footer.element == x )
+			{
+				this.footer = p.current;
+			}
 
-		if( p.current.next != null )
-			p.current.next = p.current.next.next;  // Bypass deleted node
+			if( p.current.next != null )
+				p.current.next = p.current.next.next;  // Bypass deleted node
+			
+		}
 	}
 
 	// Simple print method
