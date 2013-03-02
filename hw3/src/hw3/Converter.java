@@ -7,7 +7,7 @@ class Converter {
 	Converter( String infix )
 	{
 		try {
-			this.infix = Converter.toQueue( infix );
+			this.infix = Converter.toQueue( "(" + infix + ")" );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -23,7 +23,7 @@ class Converter {
 	 */
 	private static QueueAr toQueue( String infix ) throws Exception
 	{
-		QueueAr q = new QueueAr(infix.length() + 2);
+		QueueAr q = new QueueAr(infix.length() + 5);
 		String s = ""; // currently being processed string
 		String token;
 				
@@ -50,7 +50,7 @@ class Converter {
 		}
 		
 		q.enqueue( ")" );
-		
+				
 		return q;
 	}
 	
@@ -86,7 +86,7 @@ class Converter {
 			}
 			else
 			{
-				while( !internal.isEmpty() && Calculator.precedence( (String) token, (String) internal.top() ) && !internal.top().equals("(") )
+				while( !internal.isEmpty() && Calculator.precedence( (String) internal.top(), (String) token ) && !internal.top().equals("(") )
 				{
 					s.enqueue( internal.topAndPop() );
 				}
