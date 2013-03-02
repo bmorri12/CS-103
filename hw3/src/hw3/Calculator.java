@@ -1,5 +1,8 @@
 package hw3;
 
+import java.util.Scanner;
+import java.io.*;
+
 public class Calculator
 {
 	QueueAr q;
@@ -133,10 +136,39 @@ public class Calculator
 		return ( Calculator.priority( op1.charAt( 0 )) >= Calculator.priority( op2.charAt( 0 ) ) );
 	}
 	
-	public static void main(String[] asd)
+	public static void main(String[] args) {
+		   
+    	String s;
+
+    	Scanner in = new Scanner( System.in );
+    	
+    	System.out.println("Please enter an infix expression, or 'test': ");
+    	
+    	s= in.next();
+    	
+    	if( s.equals("test") )
+    	{
+    		Calculator.test();
+    	}
+    	else
+    	{
+    		Calculator calc = new Calculator( s );
+    	}
+    	
+    	
+    }
+
+	public static void test() {
+		System.out.println( "Okay, testing..." );
+		
+		Calculator.test( "3+4*5/6" );
+		Calculator.test( "(300+23)*(43-21)/(84+7)" );
+		Calculator.test( "(4+8)*(6-5)/((3-2)*(2+2))" );
+	}
+	
+	public static void test( String s )
 	{
-		Calculator calc = new Calculator( "(300+23)*(43-21)/(84+7)" );
-		
-		
+		System.out.println( "Testing for: " + s );
+		Calculator calc = new Calculator( s );
 	}
 }
