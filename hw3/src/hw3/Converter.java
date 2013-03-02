@@ -26,9 +26,7 @@ class Converter {
 		QueueAr q = new QueueAr(infix.length() + 2);
 		String s = ""; // currently being processed string
 		String token;
-		
-		System.out.println( infix );
-		
+				
 		// wrap it
 		q.enqueue( "(" );
 		

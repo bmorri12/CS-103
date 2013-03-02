@@ -116,12 +116,18 @@
         }
         
         /**
-         * Helper method to print out the queue & empty it
+         * Helper method to get a string of the queue
          */
-        public void print()
+        public String toString()
         {
-        	while( !this.isEmpty( ) )
-                System.out.println( this.dequeue( ) );
+        	String s = "";
+        	
+        	for( int j = 0; j < currentSize; j++ )
+        	{
+        		s = s + " " + this.theArray[ j ];
+        	}
+        	
+        	return s;
         }
 
         /**

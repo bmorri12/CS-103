@@ -101,11 +101,12 @@ public class StackLi
 	 */
 	public void print()
 	{
+		ListNode n = topOfStack;
 		
-		
-		while(!this.isEmpty())
+		while( n.next != null )
 		{
-			System.out.println( this.topAndPop() );
+			System.out.println( n.element );
+			n = n.next;
 		}
 	}
 

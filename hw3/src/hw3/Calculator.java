@@ -10,7 +10,8 @@ public class Calculator
 		try {
 			this.q = conv.toPostFix();
 			
-			this.q.print();
+			System.out.println( "converted to postfix: " + this.q.toString() );
+			System.out.println( "answer is: " + this.result() );
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -18,56 +19,55 @@ public class Calculator
 		}
 	}
 	
-	public static void result( QueueAr q )
+	public double result()
+	{
+		return Calculator.result( this.q );
+	}
+	
+	public static double result( QueueAr q )
 	{
 		double num, op1, op2, result;
 		
 		String token;
 		StackLi stack = new StackLi();
 		
+		op1 = 0;
+		op2 = 0;
+		
 		while( !q.isEmpty( ) )
 		{
-//            System.out.println( this.dequeue( ) );
 			token = (String) q.dequeue();
-			
+						
 			if( Calculator.isOperand( token ) )
 			{
 				stack.push( new Double( token ) );
 			}
+			else if( Calculator.isOperator( token ) )
+			{
+				try{
+					op1 = (Double)stack.topAndPop();
+					op2 = (Double)stack.topAndPop();
+				} catch (Exception e) {}  //catch but do nothing
+				result = Calculator.evaluate( op2, token.charAt(0), op1 );
+				try{
+					stack.push(new Double(result));
+				} catch (Exception e) {}
+			}
 
 		}
-		
-//		for(int j = 0; j < len; j++)
-//		{
-//			token = s.charAt(j);
-//			if( isOperand(token) )
-//			{
-//				num = token - '0';
-//				try{
-//					stack.push(new Double(num));
-//				} catch (Exception e) {} // catch but do nothing
-//			}
-//			else if( isOperator(token))
-//			{
-//				try{
-//					digit2 = (Double)stack.topAndPop();
-//					digit1 = (Double)stack.topAndPop();
-//				} catch (Exception e) {}  //catch but do nothing
-//				op2 = digit2.doubleValue();
-//				op1 = digit1.doubleValue();
-//				result = evaluate(op1, token, op2);
-//				try{
-//					stack.push(new Double(result));
-//				} catch (Exception e) {}  //catch but do nothing
-//			}
-//		}
-//		ans = (Double)stack.topAndPop();
-//		System.out.println("result is " + ans.doubleValue() );
+				
+		return (Double) stack.topAndPop();
+
 	}
 	
 	public static boolean isOperator(char op)
 	{
 		return ((op=='*') || (op =='/') || (op=='+') || (op=='-') || (op=='(') || (op==')'));
+	}
+	
+	public static boolean isOperator(String op)
+	{
+		return Calculator.isOperator( op.charAt( 0) );
 	}
 	
 	public static boolean isOperand(String op)
@@ -135,9 +135,8 @@ public class Calculator
 	
 	public static void main(String[] asd)
 	{
-		Calculator calc = new Calculator( "(4+8)*(6-5)/((3-2)*(2+2))" );
+		Calculator calc = new Calculator( "(300+23)*(43-21)/(84+7)" );
 		
-		System.out.println( calc.result() );
 		
 	}
 }
