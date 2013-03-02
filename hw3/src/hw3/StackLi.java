@@ -60,12 +60,12 @@ public class StackLi
 	 * Does not alter the stack.
 	 * @return the most recently inserted item in the stack, or null, if empty.
 	 */
-	public char top( )
+	public Object top( )
 	{
 		return topOfStack.element;
 	}
 
-	/**i
+	/**
 	 * Remove the most recently inserted item from the stack.
 	 * @exception Underflow if the stack is empty.
 	 */
@@ -80,9 +80,9 @@ public class StackLi
 	 * Return and remove the most recently inserted item from the stack.
 	 * @return the most recently inserted item in the stack, or null, if empty.
 	 */
-	public char topAndPop( )
+	public Object topAndPop( )
 	{
-		char topItem = topOfStack.element;
+		Object topItem = topOfStack.element;
 		topOfStack = topOfStack.next;
 		return topItem;
 	}
@@ -91,7 +91,7 @@ public class StackLi
 	 * Insert a new item into the stack.
 	 * @param x the item to insert.
 	 */
-	public void push( char x )
+	public void push( Object x )
 	{
 		topOfStack = new ListNode( x, topOfStack );
 	}
@@ -101,9 +101,11 @@ public class StackLi
 	 */
 	public void print()
 	{
+		
+		
 		while(!this.isEmpty())
 		{
-			System.out.print( this.topAndPop() );
+			System.out.println( this.topAndPop() );
 		}
 	}
 

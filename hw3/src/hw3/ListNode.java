@@ -7,19 +7,19 @@ package hw3;
 class ListNode
 {
 		// Constructors
-	ListNode( char theElement )
+	ListNode( Object theElement )
 	{
 		this( theElement, null );
 	}
 
-	ListNode( char theElement, ListNode n )
+	ListNode( Object theElement, ListNode n )
 	{
 		element = theElement;
 		next	= n;
 	}
 
 		// Friendly data; accessible by other package routines
-	char   element;
+	Object element;
 	ListNode next;
 }
 

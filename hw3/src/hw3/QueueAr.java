@@ -55,6 +55,15 @@
         {
             return currentSize == theArray.length;
         }
+        
+        /**
+         * Returns the length of the queue
+         * @return int
+         */
+        public int length( )
+        {
+            return this.currentSize;
+        }
 
         /**
          * Make the queue logically empty.
@@ -133,20 +142,5 @@
         private int        back;
 
         static final int DEFAULT_CAPACITY = 10;
-
-
-        public static void main( String [ ] args )
-        {
-            QueueAr q = new QueueAr( );
-
-            try
-            {
-                for( int i = 0; i < 10; i++ )
-                    q.enqueue( new MyInteger( i ) );
-            }
-            catch( Exception e ) { System.out.println( "Unexpected overflow" ); }
-
-            while( !q.isEmpty( ) )
-                System.out.println( q.dequeue( ) );
-        }    
+   
     }
