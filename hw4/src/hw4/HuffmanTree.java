@@ -81,11 +81,12 @@ public class HuffmanTree {
 				HuffmanNode huff = new HuffmanNode( huff1, huff2 );
 				b.insert( huff );
 			}
+			HuffmanTree tree = new HuffmanTree( (HuffmanNode) b.deleteMin() );
+			return tree;
 		} catch (Underflow e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		b.printHeap();
 		return null;
 	}
 	
@@ -98,7 +99,8 @@ public class HuffmanTree {
 		// TODO Auto-generated method stub
 		BinaryHeap bheap = HuffmanTree.fileToHeap( args[0] );
 		bheap.printHeap();
-		HuffmanTree huff = HuffmanTree.createFromHeap( bheap );
+		HuffmanTree htree = HuffmanTree.createFromHeap( bheap );
+		htree.printLegend();
 	}
 
 }
