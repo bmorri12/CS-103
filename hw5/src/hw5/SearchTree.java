@@ -151,8 +151,9 @@ public class SearchTree
 	 * @param x is item to search for.
 	 * @param t the node that roots the tree.
 	 * @return node containing the matched item.
+	 * @throws Overflow 
 	 */
-	private TreeNode find( Object x )
+	private TreeNode find( Object x ) throws Overflow
 	{
 		return this.findClosest( this.root, x );
 	}
@@ -257,7 +258,7 @@ public class SearchTree
 			Scanner in = new Scanner( System.in  );
 	    	String needle = in.next();	    	
 			
-			TreeNode node = tree.findClosest( tree.root, needle);
+			TreeNode node = tree.find( needle);
 			
 			if( node != null )
 			{
