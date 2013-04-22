@@ -9,3 +9,5 @@ This Map/Reduce program generates that new table by:
 1. Map: iterating through every member of every group, emiting one call each time. (So, a group with 20 members emits 20 times.)
 2. Reduce: combine multiple emissions (ie. a user in multiple groups) into a single entry
 3. Finalize: standardize the object, primarily for cases where a user is only in one group (and hence reduce was never called).
+
+Note: this is extracted from larger project I'm writing: https://github.com/nyuadsg/passport
